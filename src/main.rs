@@ -10,6 +10,7 @@ use clap::Parser;
 use config::{Config, load_config};
 use env_logger::WriteStyle;
 use intro::write_welcome_message;
+use omnibar::MultiProcess;
 use std::env;
 use std::path::{Path, PathBuf};
 use upload::upload_handler::{get_upload_mode, upload_file};
@@ -63,6 +64,9 @@ async fn main() {
         std::process::exit(2)
     });
 
+    let mut archive_proc = MultiProcess::new("Archiving...");
+    archive_proc.start();
+
     for folder_raw in folders_to_backup {
         log::info!("Backup started for: {folder_raw}");
 
@@ -74,7 +78,7 @@ async fn main() {
                 .expect("`folders_to_backup` is checked during loading of config file"),
         );
         let temp_archive_path: PathBuf =
-            match create_tarball(folder, config.clone().temporary_folder) {
+            match create_tarball(folder, config.clone().temporary_folder, &mut archive_proc) {
                 Ok(temp_archive_path) => {
                     log::info!("Created backup archive {}", temp_archive_path.display());
                     temp_archive_path

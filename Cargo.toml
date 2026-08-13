@@ -50,6 +50,7 @@ env_logger = "0.11.11"
 flate2 = "1.1.9"
 log = "0.4.33"
 nix = { version = "0.31.3", features = ["user"] }
+omnibar = { git = "https://git.sr.ht/~lina-roether/omnibar" }
 openssl = { version = "0.10.81", features = ["vendored"], optional = true }
 serde = { version = "1.0.229", features = ["derive"] }
 shellexpand = "3.1.2"
